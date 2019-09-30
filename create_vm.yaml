@@ -1,0 +1,64 @@
+- hosts: localhost
+  become: true
+  connection: local
+  gather_facts: false
+  vars_files:
+    - creds.yaml
+    - new_vm.yaml
+  tasks:
+    - name: Deploy VM via Template
+      vmware_guest:
+        hostname: "{{vcenter_host}}"
+        username: "{{vcenter_user}}"
+        password: "{{vcenter_pass}}"
+        validate_certs: no
+        datacenter: "{{ dc_name }}"
+        name: "{{ item }}"
+        esxi_hostname: "{{ esxi_name }}"
+        template: "{{ vm_template }}"
+        folder: "{{ folder_path }}"
+        disk:
+          - size_gb: "{{ disk_size_gb }}"
+            type: thin
+            datastore: "{{ datastore_name }}"
+        hardware:
+          memory_mb: "{{ ram_size_mb }}"
+          num_cpus: "{{ num_of_cpus }}"
+          num_cpu_cores_per_socket: "{{ num_of_cores_per_socket }}"
+        networks:
+          - name: "{{ vlan_group }}"
+        state: poweredon
+      with_items:
+        - "{{ vm_names }}"
+      delegate_to: localhost
+      when: use_template == "yes"
+#####
+    - name: Deploy VM without template
+      vmware_guest:
+        hostname: "{{vcenter_host}}"
+        username: "{{vcenter_user}}"
+        password: "{{vcenter_pass}}"
+        validate_certs: no
+        datacenter: "{{ dc_name }}"
+        name: "{{ item }}"
+        esxi_hostname: "{{ esxi_name }}"
+        folder: "{{ folder_path }}"
+        guest_id: "{{ os_guest_id }}"
+        disk:
+          - size_gb: "{{ disk_size_gb }}"
+            type: thin
+            datastore: "{{ datastore_name }}"
+        hardware:
+          memory_mb: "{{ ram_size_mb }}"
+          num_cpus: "{{ num_of_cpus }}"
+          num_cpu_cores_per_socket: "{{ num_of_cores_per_socket }}"
+        networks:
+          - name: "{{ vlan_group }}"
+        cdrom:
+          type: iso
+          iso_path: "{{ cd_path }}"
+        state: poweredon
+      with_items:
+        - "{{ vm_names }}"
+      delegate_to: localhost
+      when: use_template == "no"
