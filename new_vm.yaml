@@ -1,0 +1,45 @@
+# Specify the name(s) of the VM which needs to be created
+vm_names:
+  - New-VM
+
+# Specify the datacenter name of the Vcenter Server
+dc_name: VCNLab
+
+# Specify the ESXI name or IP where VM needs to be deployed. Only one needs to be mentioned
+esxi_name: VC-ESX-1
+
+# Need to specify whether the new VM(s) need to be deployed via Template or not. Just need to mention "yes" or "no". In case of "no" it will deploy fresh VM without any OS
+use_template: "yes"
+
+# Need to mention the exact Template name from which the VM needs to be deployed only if the above condition is "yes" For Eg. Kali-Linux-Temp or Win10-64_temp
+vm_template: Windows7_temp
+
+# Specify the folder path where VM(s) need to be deployed
+folder_path: /USERS/MyFolder
+
+# Specify the Root Disk size in GB
+disk_size_gb: 100
+
+# Need to mention the Datastore Names where the VM will be stored.
+datastore_name: Datastore01
+
+# Specify the RAM size in MBs
+ram_size_mb: 4096
+
+# Specify the CPU cores
+num_of_cpus: 4
+
+# Specify the number of cores per socket
+num_of_cores_per_socket: 2
+
+# Specify the VLAN or Port Group. Eg. VM_Network
+vlan_group: V1-Port
+
+### If the use_template is "no" then we have to mention the below 2 parameters
+
+# CD Path where the iso has been kept in Datastore. For example "[Datastore_name] ISO/Folder/Path"
+cd_path: "[Datastore04] ISO_Store/Windows/Win7/en_windows_7.iso"
+
+# OS Guest ID needs to be mentioned as this specifies the VM with its OS Type. You can find guest id at https://vdc-download.vmware.com/vmwb-repository/dcr-public/da47f910-60ac-438b-8b9b-6122f4d14524/16b7274a-bf8b-4b4c-a05e-746f2aa93c8c/doc/vim.vm.GuestOsDescriptor.GuestOsIdentifier.html
+# For Example windows7_64Guest, centos7_64Guest
+os_guest_id: windows7_64Guest
