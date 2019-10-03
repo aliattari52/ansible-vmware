@@ -1,0 +1,8 @@
+# Mention the Host name or IP address of Vcenter Server
+vcenter_host: 
+
+# Mention the user which has all access to deploy new VM
+vcenter_user: 
+
+# Mention the Password of the above Vcenter user
+vcenter_pass: 
